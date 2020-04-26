@@ -1,0 +1,6 @@
+# tf files
+*.tfstate*
+# Module directory
+.terraform/
+#
+.idea

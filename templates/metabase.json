@@ -1,0 +1,40 @@
+[
+  {
+    "command": null,
+    "cpu": 256,
+    "dependsOn": null,
+    "dnsServers": null,
+    "dockerLabels": null,
+    "entryPoint": null,
+    "environment": null,
+    "essential": true,
+    "firelensConfiguration": null,
+    "healthCheck": null,
+    "image": "metabase",
+    "links": null,
+    "linuxParameters": null,
+    "logConfiguration": null,
+    "memory": 256,
+    "memoryReservation": 128,
+    "mountPoints": null,
+    "name": "metabase",
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80,
+        "protocol": "tcp"
+      }
+    ],
+    "privileged": null,
+    "readonlyRootFilesystem": false,
+    "repositoryCredentials": null,
+    "secrets": null,
+    "startTimeout": 30,
+    "stopTimeout": 30,
+    "systemControls": null,
+    "ulimits": null,
+    "user": null,
+    "volumesFrom": null,
+    "workingDirectory": null
+  }
+]
