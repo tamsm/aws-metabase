@@ -72,7 +72,7 @@ resource "aws_nat_gateway" "gw" {
   depends_on    = [aws_internet_gateway.igw]
 }
 
-// Create a new route table for the private subnets
+// Create a new route table for the private/public subnets
 // And make it route non-local traffic through the NAT gateway to the internet
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id

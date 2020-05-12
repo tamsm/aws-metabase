@@ -1,8 +1,8 @@
 // Security groups
 // lb
 resource "aws_security_group" "lb" {
-  name        = "tf-ecs-alb"
-  description = "Controls route rules to the ALB"
+  name        = "${var.project}-sg-alb"
+  description = "Allows 443 inbound route & All outgoing"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -17,12 +17,6 @@ resource "aws_security_group" "lb" {
     to_port     = 443
     cidr_blocks = ["0.0.0.0/0"]
   }
-//  ingress {
-//    protocol    = "tcp"
-//    from_port   = var.app_port
-//    to_port     = var.app_port
-//    cidr_blocks = ["0.0.0.0/0"]
-//  }
   egress {
     from_port = 0
     to_port   = 0
@@ -33,8 +27,8 @@ resource "aws_security_group" "lb" {
 
 // ECS task allows all outgoing, only 3000TCP incoming via ALB
 resource "aws_security_group" "ecs_tasks" {
-  name        = "${var.project}-${var.env}"
-  description = "allow inbound access from the ALB only"
+  name        = "${var.project}-sg-ecs-task"
+  description = "Allow inbound route from the ALB & All outgoing"
   vpc_id      = aws_vpc.main.id
 
   ingress {

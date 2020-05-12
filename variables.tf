@@ -14,12 +14,14 @@ variable "aws_region" {
   description = "The AWS region to create things in."
 }
 variable "profile" {
-  description = "The shared credentials used for provisioning"
+  description = "The shared credentials profile nam used for provisioning"
 }
 
 variable "vcp_ip_range" {
   default     = "10.0.0.0/16"
   description = "The default VPC's ip range"
+}
+variable "hosted_zone_name" {
 }
 
 variable "app_port" {

@@ -27,7 +27,7 @@ resource "aws_ecs_service" "main" {
     container_port   = var.app_port
   }
 
-  depends_on = [aws_alb_listener.front_end]
+  depends_on = [aws_alb_listener.front_end_ssl]
 }
 
 
