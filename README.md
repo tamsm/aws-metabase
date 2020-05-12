@@ -1,7 +1,5 @@
 ## Metabase on AWS
 
----
-
 Example [Metabase](https://www.metabase.com/) deployment on aws ecs Fargate. The idea is to provision 
 a standard aws VPC, have Metabase monitored &logged via CloudWatch, provide an autoscaling group should there 
 be an increase in users. In order to access the reporting databases and other data-warehousing
@@ -20,14 +18,11 @@ ECS Cluster -> ECS service -> ECS task definition. The service depends on a task
 can be compared to `docker run` command, whereas the service resource resembles `docker-compose` command which
 takes care of networking ([security groups](security.tf)), number of instances (the service level), in our case also the association
 with our load balancer target group.
-
 - The ECS task describes a single container instance, such as which image should be used, the aws Fargate cpu and memory
 size, port mappings, commands/entrypoints, log groups, health checks, etc.   
-
 - [network.tf](network.tf) -> VPC, private and public subnets, internet gateway,
 nat gateway, elastic ip, route tables and routes 
 - [aws cloud watch log group](logs.tf) defines the log group where the application logs will be stored
-- 
 
 #### Prerequsites:
 - aws route53 zone, which will be pulled by data.aws_route53_zone and used by the acm resource 
