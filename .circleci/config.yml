@@ -15,5 +15,5 @@ workflows:
           dockerfile: Dockerfile
           path: .
           region: AWS_REGION
-          repo: AWS_RESOURCE_NAME_PREFIX
+          repo: metabase
           tag: "$CIRCLE_SHA1"
