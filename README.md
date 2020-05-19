@@ -1,3 +1,5 @@
+[![tamsm](https://circleci.com/gh/tamsm/aws-metabase.svg?style=svg)](https://circleci.com/gh/tamsm/aws-metabase)
+
 ## Metabase on AWS
 
 Example [Metabase](https://www.metabase.com/) deployment on aws ecs Fargate. The idea is to provision 
