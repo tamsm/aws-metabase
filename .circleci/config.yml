@@ -2,12 +2,18 @@
 version: 2.1
 # Use a package of configuration called an orb.
 orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+  aws-ecr: circleci/aws-ecr@6.7.0
+
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
+  build_and_push_image:
     jobs:
-      - welcome/run
+      - aws-ecr/build-and-push-image:
+          account-url: 166780664243.dkr.ecr.eu-west-3.amazonaws.com
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          create-repo: true
+          dockerfile: Dockerfile
+          path: .
+          region: AWS_REGION
+          repo: AWS_RESOURCE_NAME_PREFIX
+          tag: "$CIRCLE_SHA1"
