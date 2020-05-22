@@ -30,8 +30,9 @@ nat gateway, elastic ip, route tables and routes
 - aws route53 zone, which will be pulled by data.aws_route53_zone and used by the acm resource 
 for certificate creation
 
-#### To deploy first run:
-- ` terraform apply -target=aws_ecr_repository.metabase`
+#### To deploy:
+- First run` terraform apply -target=aws_s3_bucket.terraform_state` and then `terraform init` in order
+to initialize/create the remote backend for storing terraform state  
 then run `./cli.sh` in order to build and push the current Metabase docker image to the ECR repository
 and finally run `terraform apply` to provision the rest of resources.
 - a finally go to your Metabase public address (terraform output alb_public_dns) 
@@ -39,7 +40,8 @@ and finally run `terraform apply` to provision the rest of resources.
 
 TODO's:
  - Move task definiton to [template file](templates/metabase.json) 
- - Move the ECR image build/push to local-exec provisioner 
+ - Move the ECR image build/push to circleci workflow
+ - Add terraform remote state 
  - Add postgresql RDS as database backend for Metabase
  - Autoscaling Group based on container CPU utilisation so more worload/users 
  is reflected by the number of instances 

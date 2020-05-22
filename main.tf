@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "metabase" {
 [
   {
     "cpu": ${var.fargate_cpu},
-    "image": "${aws_ecr_repository.metabase.repository_url}:latest",
+    "image": "${data.aws_ecr_repository.metabase.repository_url}:latest",
     "memory": ${var.fargate_memory},
     "name": "${var.project}",
     "networkMode": "awsvpc",
@@ -74,11 +74,6 @@ resource "aws_ecs_task_definition" "metabase" {
 DEFINITION
 }
 
-resource "aws_ecr_repository" "metabase" {
-  name                 = var.project
-  image_tag_mutability = "MUTABLE"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
+data "aws_ecr_repository" "metabase" {
+  name = var.project
 }
