@@ -60,7 +60,6 @@ apply_job: &apply_job
         name: terraform apply
         command: |
           cd ~/project/
-#         not sure .terraform is coppied here, will see after build
           terraform init
           terraform apply --auto-approve
 
@@ -90,9 +89,9 @@ jobs:
           command: |
             cd ~/project/
             terraform plan
+
+# an alias for apply_job
   apply:
-    <<: *apply_job
-  apply-with-approval:
     <<: *apply_job
 
 
