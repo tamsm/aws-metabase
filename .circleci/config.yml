@@ -95,18 +95,17 @@ jobs:
     <<: *apply_job
 
 
-  destroy:
-    <<: *default_config
-    steps:
-      - *restore_repo
-      - *set_terraform_environment
-      - *terraform_init
-      - run:
-          name: "Destruction of env"
-          command: |
-            cd ~/project/
-            terraform state rm aws_s3_bucket.terraform_state aws_dynamodb_table.terraform_state_locks
-            terraform destroy --auto-approve
+#  destroy:
+#    <<: *default_config
+#    steps:
+#      - *restore_repo
+#      - *set_terraform_environment
+#      - *terraform_init
+#      - run:
+#          name: "Destroy resources"
+#          command: |
+#            cd ~/project/
+#            terraform destroy --auto-approve
 
 
 
@@ -137,6 +136,6 @@ workflows:
           type: approval
           requires:
             - apply
-      - destroy:
-          requires:
-            - hold
+#      - destroy:
+#          requires:
+#            - hold

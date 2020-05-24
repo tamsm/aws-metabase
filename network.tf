@@ -14,11 +14,17 @@ resource "aws_vpc" "main" {
   }
 }
 
+// -1 -> for now restricting to 2 az's,
+locals {
+  zones_count = length(data.aws_availability_zones.zones.names) - 1
+}
+
 // private subnet
 resource "aws_subnet" "private" {
+  count                   = local.zones_count
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = cidrsubnet(var.vcp_ip_range, 8, length(data.aws_availability_zones.zones.names) + 1)
-  availability_zone       = element(data.aws_availability_zones.zones.names, 0)
+  cidr_block              = cidrsubnet(var.vcp_ip_range, 8, local.zones_count + count.index)
+  availability_zone       = element(data.aws_availability_zones.zones.names, count.index)
   tags = {
     Name = "${var.project}-private-subnet"
     Env  = var.env
@@ -27,7 +33,7 @@ resource "aws_subnet" "private" {
 
 // public subnets
 resource "aws_subnet" "public" {
-  count                   = length(data.aws_availability_zones.zones.names)
+  count                   = local.zones_count
   vpc_id                  = aws_vpc.main.id
   cidr_block              = cidrsubnet(var.vcp_ip_range, 8, count.index)
   availability_zone       = element(data.aws_availability_zones.zones.names, count.index)
@@ -101,15 +107,19 @@ resource "aws_route_table" "public" {
 
 // Explicitely associate the newly created route tables to the private subnets (so they don't default to the main route table)
 resource "aws_route_table_association" "private" {
-  subnet_id      = aws_subnet.private.id
-  route_table_id = aws_route_table.private.id
+  count          = local.zones_count
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
+  route_table_id = element(aws_route_table.private.*.id, count.index)
 }
 
 resource "aws_route_table_association" "public" {
-  count          = length(data.aws_availability_zones.zones.names)
+  count          = local.zones_count
   subnet_id      = element(aws_subnet.public.*.id, count.index)
   route_table_id = element(aws_route_table.public.*.id, count.index)
 }
 
-
+// db subnet group for RDS service
+resource "aws_db_subnet_group" "postgres" {
+  subnet_ids = aws_subnet.private.*.id
+}
 

@@ -39,6 +39,7 @@ resource "aws_ecs_task_definition" "metabase" {
   cpu                      = var.fargate_cpu
   memory                   = var.fargate_memory
   execution_role_arn       = aws_iam_role.ecs_task.arn
+  depends_on = [aws_db_instance.postgresql]
   container_definitions = <<DEFINITION
 [
   {
@@ -56,6 +57,25 @@ resource "aws_ecs_task_definition" "metabase" {
         "awslogs-stream-prefix": "ecs"
       }
     },
+    "environment": [
+      {"name":"MB_DB_TYPE",
+      "value":"postgres"},
+
+      {"name":"MB_DB_DBNAME",
+      "value":"metabase"},
+
+      {"name":"MB_DB_PORT",
+      "value":"${aws_db_instance.postgresql.port}"},
+
+      {"name":"MB_DB_USER",
+      "value":"${aws_db_instance.postgresql.username}"},
+
+      {"name":"MB_DB_PASS",
+      "value":"${random_password.password.result}"},
+
+      {"name":"MB_DB_HOST",
+      "value":"${aws_db_instance.postgresql.address}"}
+    ],
     "portMappings": [
       {
         "containerPort": ${var.app_port},

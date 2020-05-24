@@ -44,3 +44,20 @@ resource "aws_security_group" "ecs_tasks" {
     cidr_blocks     = ["0.0.0.0/0"]
   }
 }
+
+// Allows incoming traffic from metabase instance
+resource "aws_security_group" "db" {
+  name        = "db"
+  description = "Security group which allows inbound only access from public subnet"
+  vpc_id      = aws_vpc.main.id
+
+ ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = aws_subnet.public[*].cidr_block
+  }
+  tags = {
+    Name        = var.project
+  }
+}
